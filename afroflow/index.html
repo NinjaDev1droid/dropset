@@ -223,45 +223,6 @@
     .restore-panel p { margin-bottom: 12px; }
     .restore-note { color: var(--muted); font-size: 0.8rem; margin: 12px 0 0; }
 
-    /* ---- Roadmap ---- */
-    .roadmap-section h2 {
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .roadmap {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .roadmap-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 20px;
-      border-radius: 10px;
-      font-size: 0.88rem;
-    }
-
-    .roadmap-item:hover { background: var(--card); }
-
-    .roadmap-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .dot-done    { background: #2ecc71; }
-    .dot-active  { background: var(--accent); box-shadow: 0 0 8px rgba(245,166,35,0.6); }
-    .dot-soon    { background: #333; border: 1px solid #555; }
-
-    .roadmap-title { font-weight: 600; flex: 1; }
-    .roadmap-status { font-size: 0.78rem; color: var(--muted); }
-
     /* ---- Footer ---- */
     footer {
       text-align: center;
@@ -382,43 +343,6 @@
 
       <div class="backup-message" id="backupMessage"></div>
     </section>
-
-    <!-- Roadmap -->
-    <div class="roadmap-section">
-      <h2>Project Roadmap</h2>
-      <div class="roadmap">
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-done"></div>
-          <div class="roadmap-title">Setlist Generator</div>
-          <div class="roadmap-status">✅ Done</div>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-done"></div>
-          <div class="roadmap-title">DJ Press Kit (EPK)</div>
-          <div class="roadmap-status">✅ Done</div>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-done"></div>
-          <div class="roadmap-title">Track Library Manager</div>
-          <div class="roadmap-status">✅ Done</div>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-done"></div>
-          <div class="roadmap-title">Gig Tracker & Income Dashboard</div>
-          <div class="roadmap-status">✅ Done</div>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-done"></div>
-          <div class="roadmap-title">Social Media Caption Generator</div>
-          <div class="roadmap-status">✅ Done</div>
-        </div>
-        <div class="roadmap-item">
-          <div class="roadmap-dot dot-active"></div>
-          <div class="roadmap-title">Launch & Monetize (SaaS)</div>
-          <div class="roadmap-status">🚀 In Progress</div>
-        </div>
-      </div>
-    </div>
 
   </main>
 

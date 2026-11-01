@@ -86,19 +86,6 @@ Change these to whatever colors you want.
 
 ---
 
-## 🗺️ Roadmap
-
-| Status | Feature |
-|--------|---------|
-| ✅ Done | Setlist Generator |
-| ✅ Done | DJ Press Kit (EPK) |
-| 🔨 Next | Track Library Manager |
-| 📋 Planned | Gig Tracker & Income Dashboard |
-| 📋 Planned | Social Media Caption Generator |
-| 🚀 Future | Launch as SaaS product ($19/mo) |
-
----
-
 ## 💾 Back Up Your Data
 
 Your library and gigs are saved inside your browser — clearing browser data (or switching browser/computer) loses them. Back them up:
