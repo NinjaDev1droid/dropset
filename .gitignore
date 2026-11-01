@@ -1,0 +1,14 @@
+# Test tools and build output
+node_modules/
+_site/
+
+# Mac files
+.DS_Store
+
+# DJ Taban's personal pages and photos — not part of DropSet
+DJ_Taban_EPK.html
+DJ_Taban_Portfolio.html
+DJ_Profile/
+hero.jpg
+hero3.jpeg
+logo.jpeg

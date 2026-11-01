@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>DropSet – Library Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="back-link">← DropSet Home</a>
+    <div class="header-center">
+      <h1>📚 Library Manager</h1>
+      <p class="subtitle">Your personal track database — search, tag, and organize</p>
+    </div>
+    <div class="header-stats">
+      <span id="totalCount">0 tracks</span>
+    </div>
+  </header>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍  Search by title, artist, genre…" oninput="renderTable()" />
+    </div>
+    <div class="toolbar-right">
+      <select id="filterGenre" class="filter-select" onchange="renderTable()">
+        <option value="">All Genres</option>
+        <optgroup label="🌍 African">
+          <option value="Afrobeats">Afrobeats</option>
+          <option value="Amapiano">Amapiano</option>
+          <option value="Afro-Pop">Afro-Pop</option>
+          <option value="Afro House">Afro House</option>
+        </optgroup>
+        <optgroup label="🎤 Hip-Hop">
+          <option value="Trap">Trap</option>
+          <option value="Old School">Old School</option>
+          <option value="Drill">Drill</option>
+          <option value="Conscious">Conscious</option>
+        </optgroup>
+        <optgroup label="🎵 R&amp;B &amp; Soul">
+          <option value="R&B">R&amp;B</option>
+          <option value="Neo-Soul">Neo-Soul</option>
+          <option value="Quiet Storm">Quiet Storm</option>
+          <option value="Motown">Motown</option>
+        </optgroup>
+        <optgroup label="🌴 Reggae &amp; Latin">
+          <option value="Reggaeton">Reggaeton</option>
+          <option value="Salsa">Salsa</option>
+          <option value="Samba">Samba</option>
+          <option value="Dancehall">Dancehall</option>
+        </optgroup>
+        <optgroup label="Other">
+          <option value="Custom">Custom</option>
+        </optgroup>
+      </select>
+      <select id="filterVibe" class="filter-select" onchange="renderTable()">
+        <option value="">All Vibes</option>
+        <option value="hype">🔥 Hype</option>
+        <option value="dance">💃 Dance</option>
+        <option value="mixed">🎯 Mixed</option>
+        <option value="smooth">😌 Smooth</option>
+      </select>
+      <select id="filterEnergy" class="filter-select" onchange="renderTable()">
+        <option value="">All Energy</option>
+        <option value="low">🔵 Low (1–3)</option>
+        <option value="medium">🟢 Medium (4–6)</option>
+        <option value="high">🟠 High (7–8)</option>
+        <option value="peak">🔴 Peak (9–10)</option>
+      </select>
+      <select id="sortBy" class="filter-select" onchange="renderTable()">
+        <option value="dateAdded">Sort: Date Added</option>
+        <option value="title">Sort: Title A–Z</option>
+        <option value="artist">Sort: Artist A–Z</option>
+        <option value="bpm">Sort: BPM</option>
+        <option value="energy">Sort: Energy</option>
+        <option value="genre">Sort: Genre</option>
+      </select>
+      <button class="btn-outline" onclick="importFromSetlistDB()">⬇️ Import DropSet DB</button>
+      <button class="btn-outline" onclick="exportCSV()">📤 Export CSV</button>
+      <button class="btn-primary" onclick="openModal()">+ Add Track</button>
+    </div>
+  </div>
+
+  <!-- Main Table -->
+  <main>
+    <div class="table-wrapper">
+      <table class="library-table" id="libraryTable">
+        <thead>
+          <tr>
+            <th class="col-title">Title &amp; Artist</th>
+            <th class="col-genre">Genre</th>
+            <th class="col-bpm">BPM</th>
+            <th class="col-key">Key</th>
+            <th class="col-energy">Energy</th>
+            <th class="col-vibe">Vibe</th>
+            <th class="col-notes">Notes</th>
+            <th class="col-actions"></th>
+          </tr>
+        </thead>
+        <tbody id="libraryBody"></tbody>
+      </table>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-icon">🎵</div>
+        <p>No tracks yet.</p>
+        <p class="empty-sub">Click <strong>+ Add Track</strong> to add your first song,<br>or use <strong>⬇️ Import DropSet DB</strong> to load all built-in tracks.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add / Edit Modal -->
+  <div id="modalOverlay" class="modal-overlay" style="display:none;" onclick="closeModalOnOverlay(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Track</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Song Title *</label>
+            <input type="text" id="fTitle" placeholder="e.g. Last Last" />
+          </div>
+          <div class="form-group">
+            <label>Artist *</label>
+            <input type="text" id="fArtist" placeholder="e.g. Burna Boy" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Genre</label>
+            <select id="fGenre">
+              <optgroup label="🌍 African">
+                <option value="Afrobeats">Afrobeats</option>
+                <option value="Amapiano">Amapiano</option>
+                <option value="Afro-Pop">Afro-Pop</option>
+                <option value="Afro House">Afro House</option>
+              </optgroup>
+              <optgroup label="🎤 Hip-Hop">
+                <option value="Trap">Trap</option>
+                <option value="Old School">Old School</option>
+                <option value="Drill">Drill</option>
+                <option value="Conscious">Conscious</option>
+              </optgroup>
+              <optgroup label="🎵 R&amp;B &amp; Soul">
+                <option value="R&B">R&amp;B</option>
+                <option value="Neo-Soul">Neo-Soul</option>
+                <option value="Quiet Storm">Quiet Storm</option>
+                <option value="Motown">Motown</option>
+              </optgroup>
+              <optgroup label="🌴 Reggae &amp; Latin">
+                <option value="Reggaeton">Reggaeton</option>
+                <option value="Salsa">Salsa</option>
+                <option value="Samba">Samba</option>
+                <option value="Dancehall">Dancehall</option>
+              </optgroup>
+              <option value="Custom">Custom / Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>BPM</label>
+            <input type="number" id="fBpm" placeholder="e.g. 106" min="40" max="250" />
+          </div>
+          <div class="form-group">
+            <label>Key</label>
+            <select id="fKey">
+              <option value="">Unknown</option>
+              <option>C Major</option><option>C Minor</option>
+              <option>C# Major</option><option>C# Minor</option>
+              <option>D Major</option><option>D Minor</option>
+              <option>D# Major</option><option>D# Minor</option>
+              <option>E Major</option><option>E Minor</option>
+              <option>F Major</option><option>F Minor</option>
+              <option>F# Major</option><option>F# Minor</option>
+              <option>G Major</option><option>G Minor</option>
+              <option>G# Major</option><option>G# Minor</option>
+              <option>A Major</option><option>A Minor</option>
+              <option>A# Major</option><option>A# Minor</option>
+              <option>B Major</option><option>B Minor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Energy Level (1–10)</label>
+            <div class="energy-slider-wrap">
+              <input type="range" id="fEnergy" min="1" max="10" value="7" oninput="updateEnergyDisplay()" />
+              <span id="energyDisplay" class="energy-display">7 – High</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Vibe (select all that apply)</label>
+          <div class="vibe-checks" id="vibeChecks">
+            <label class="check-label"><input type="checkbox" value="hype" /> 🔥 Hype</label>
+            <label class="check-label"><input type="checkbox" value="dance" /> 💃 Dance Floor</label>
+            <label class="check-label"><input type="checkbox" value="mixed" /> 🎯 Mixed</label>
+            <label class="check-label"><input type="checkbox" value="smooth" /> 😌 Smooth</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Crowd</label>
+          <div class="vibe-checks" id="crowdChecks">
+            <label class="check-label"><input type="checkbox" value="young" /> 🔥 Young (18–25)</label>
+            <label class="check-label"><input type="checkbox" value="mixed" /> 🎯 Mixed (25–40)</label>
+            <label class="check-label"><input type="checkbox" value="mature" /> 🎙️ Mature (35+)</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notes / Tags</label>
+          <input type="text" id="fNotes" placeholder="e.g. peak hour banger, transitions well with Essence" />
+        </div>
+
+        <div class="form-group">
+          <label>Link (SoundCloud / YouTube / Beatport)</label>
+          <input type="url" id="fLink" placeholder="https://…" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveTrack()">Save Track</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="deleteOverlay" class="modal-overlay" style="display:none;">
+    <div class="modal modal-small">
+      <div class="modal-header">
+        <h2>Delete Track?</h2>
+        <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteMessage" style="color:#aaa; font-size:0.9rem;"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>DropSet Library Manager v1.0 — Your tracks, your way 🎧</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

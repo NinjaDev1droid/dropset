@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>DropSet – Setlist Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="back-link">← DropSet Home</a>
+    <h1>🎵 Setlist Generator</h1>
+    <p class="subtitle">Build the perfect Afrobeat set for any event</p>
+  </header>
+
+  <main>
+    <section class="form-card">
+      <h2>Tell me about your gig</h2>
+
+      <div class="form-group">
+        <label for="source">Track Source</label>
+        <select id="source">
+          <option value="library">📚 My Library</option>
+          <option value="both">📚 My Library + DropSet DB</option>
+          <option value="builtin">🎧 DropSet DB only</option>
+        </select>
+        <p class="source-hint" id="sourceHint"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="eventType">Event Type</label>
+        <select id="eventType">
+          <option value="club">Club Night</option>
+          <option value="wedding">Wedding / Private Party</option>
+          <option value="festival">Festival / Outdoor</option>
+          <option value="lounge">Lounge / Rooftop</option>
+          <option value="birthday">Birthday Party</option>
+          <option value="corporate">Corporate Event</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="duration">Set Duration</label>
+        <select id="duration">
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120" selected>2 hours</option>
+          <option value="180">3 hours</option>
+          <option value="240">4 hours</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="vibe">Crowd Vibe</label>
+        <select id="vibe">
+          <option value="hype">Hype – Full energy, peak hour</option>
+          <option value="mixed" selected>Mixed – Build up and release</option>
+          <option value="smooth">Smooth – Chill, background vibes</option>
+          <option value="dance">Dance floor – Non-stop movement</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="genre">Primary Genre Focus</label>
+        <select id="genre">
+          <optgroup label="🌍 African">
+            <option value="mix" selected>Full African Mix</option>
+            <option value="afrobeats">Afrobeats (Nigeria)</option>
+            <option value="amapiano">Amapiano (South Africa)</option>
+            <option value="afropop">Afro-Pop / Mainstream</option>
+            <option value="afrohouse">Afro House</option>
+          </optgroup>
+          <optgroup label="🎤 Hip-Hop">
+            <option value="hiphop_all">All Hip-Hop</option>
+            <option value="trap">Trap</option>
+            <option value="oldschool">Old School / Golden Age</option>
+            <option value="drill">Drill</option>
+            <option value="conscious">Conscious Hip-Hop</option>
+          </optgroup>
+          <optgroup label="🎵 R&amp;B &amp; Soul">
+            <option value="rnb_all">All R&amp;B &amp; Soul</option>
+            <option value="rnb">Contemporary R&amp;B</option>
+            <option value="neosoul">Neo-Soul</option>
+            <option value="quietstorm">Quiet Storm</option>
+            <option value="motown">Motown</option>
+          </optgroup>
+          <optgroup label="🌴 Reggae &amp; Latin">
+            <option value="latin_all">All Reggae &amp; Latin</option>
+            <option value="reggaeton">Reggaeton</option>
+            <option value="salsa">Salsa</option>
+            <option value="samba">Samba</option>
+            <option value="dancehall">Dancehall</option>
+          </optgroup>
+          <optgroup label="🔀 Multi-Genre">
+            <option value="everything">Everything (All Genres)</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="crowd">Crowd Age Group</label>
+        <select id="crowd">
+          <option value="young">Young (18–25)</option>
+          <option value="mixed" selected>Mixed (25–40)</option>
+          <option value="mature">Mature (35+)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="opener">Opening Song (optional)</label>
+        <input type="text" id="opener" placeholder="e.g. Burna Boy – Last Last" />
+      </div>
+
+      <div class="form-group">
+        <label for="closer">Closing Song (optional)</label>
+        <input type="text" id="closer" placeholder="e.g. Wizkid – Essence" />
+      </div>
+
+      <button class="btn-generate" onclick="generateSetlist()">
+        🎧 Generate My Setlist
+      </button>
+    </section>
+
+    <!-- Output Section -->
+    <section class="output-card" id="outputSection" style="display:none;">
+      <div class="output-header">
+        <h2>Your Setlist</h2>
+        <div class="output-meta" id="outputMeta"></div>
+      </div>
+
+      <div class="energy-bar-container">
+        <p class="energy-label">Energy Curve</p>
+        <div class="energy-bar" id="energyBar"></div>
+      </div>
+
+      <div class="setlist-table-wrapper">
+        <table class="setlist-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Track / Artist</th>
+              <th>Genre</th>
+              <th>BPM</th>
+              <th>Energy</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="setlistBody"></tbody>
+        </table>
+      </div>
+
+      <div class="output-actions">
+        <button class="btn-secondary" onclick="copySetlist()">📋 Copy to Clipboard</button>
+        <button class="btn-secondary" onclick="printSetlist()">🖨️ Print</button>
+        <button class="btn-primary" onclick="resetForm()">🔄 Generate Another</button>
+      </div>
+
+      <div id="copyFeedback" class="copy-feedback" style="display:none;">✅ Copied to clipboard!</div>
+    </section>
+  </main>
+
+  <footer>
+    <p>DropSet v1.0 — Built for DJs, by passion 🔥</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

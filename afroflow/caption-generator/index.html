@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>Caption Generator — DropSet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a class="back-btn" href="../index.html">← DropSet</a>
+    <div class="header-info">
+      <div class="header-label">DropSet · Tool 5</div>
+      <h1>✍️ Caption Generator</h1>
+      <p>Drop your gig details — get ready-to-post captions for every platform</p>
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="main-layout">
+
+    <!-- LEFT: Input panel -->
+    <div class="panel">
+
+      <div class="field-group">
+        <label class="field-label">Event Name (optional)</label>
+        <input id="eventName" type="text" placeholder="e.g. Afrobeats Night, Lagos Vibes..." />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Event Type</label>
+        <select id="eventType">
+          <option value="">Select type...</option>
+          <option>Club Night</option>
+          <option>Festival</option>
+          <option>Rooftop Session</option>
+          <option>Private Event</option>
+          <option>Birthday Party</option>
+          <option>Wedding</option>
+          <option>Corporate Event</option>
+          <option>Radio Show</option>
+          <option>New Mix Release</option>
+          <option>Promo / Announcement</option>
+          <option>Throwback Set</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Venue</label>
+        <input id="venue" type="text" placeholder="e.g. Club Lagos, Haoman 17..." />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">City</label>
+        <input id="city" type="text" placeholder="e.g. Tel Aviv, Lagos, London..." />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Date</label>
+        <input id="date" type="date" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Genre / Music Style</label>
+        <input id="genre" type="text" placeholder="e.g. Afrobeats, Amapiano, Hip-Hop..." />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Extra Note (optional)</label>
+        <textarea id="extraNote" placeholder="Special shoutout, collab, achievement, vibe..."></textarea>
+      </div>
+
+      <!-- Platform selector -->
+      <div class="field-group">
+        <label class="field-label">Platforms</label>
+        <div class="platform-chips" id="platformChips"></div>
+      </div>
+
+      <!-- Style selector -->
+      <div class="field-group">
+        <label class="field-label">Caption Style</label>
+        <div class="style-chips" id="styleChips"></div>
+      </div>
+
+      <button class="generate-btn" id="generateBtn">✨ Generate Captions</button>
+
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="results-panel">
+
+      <!-- Captions -->
+      <div id="results">
+        <div class="empty-state">
+          <div class="empty-icon">✍️</div>
+          <h3>Ready to generate</h3>
+          <p>Fill in your gig details on the left,<br>pick platforms &amp; style, then hit Generate.</p>
+        </div>
+      </div>
+
+      <!-- Hashtag box -->
+      <div class="hashtag-box" id="hashtagBox" style="display:none;">
+        <div class="hashtag-box-title">Hashtag Engine</div>
+        <div class="hashtag-cloud" id="hashtagCloud"></div>
+        <button class="copy-all-tags" id="copyAllTags">Copy All Hashtags</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

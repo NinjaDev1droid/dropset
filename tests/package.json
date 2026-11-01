@@ -1,0 +1,13 @@
+{
+  "name": "dropset-tests",
+  "private": true,
+  "description": "Automated tests for the DropSet tools",
+  "scripts": {
+    "test": "node setlist-logic.test.js && node backup-logic.test.js && node e2e.test.js",
+    "test:logic": "node setlist-logic.test.js && node backup-logic.test.js",
+    "test:browser": "node e2e.test.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.47.2"
+  }
+}

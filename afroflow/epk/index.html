@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <link rel="icon" href="../icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>DJ Press Kit – DropSet EPK</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="top-bar">
+    <a href="../index.html" class="back-link">← DropSet Home</a>
+    <div class="top-actions">
+      <button class="btn-small" onclick="window.print()">🖨️ Save as PDF</button>
+      <button class="btn-small primary" id="editBtn" onclick="openEditor()">✏️ Edit Press Kit</button>
+    </div>
+  </header>
+
+  <!-- Shown until the DJ fills something in -->
+  <section class="welcome" id="welcome" style="display:none;">
+    <div class="welcome-icon">🎤</div>
+    <h1>Create your press kit</h1>
+    <p>Your professional DJ page for promoters and clients — your photo, bio, mixes, videos, past gigs and booking contacts, all in one place.</p>
+    <ol class="welcome-steps">
+      <li>Click <strong>Start</strong> and fill in what you have — skip anything you don't.</li>
+      <li>Your page updates as you type and saves by itself.</li>
+      <li>Share it as a PDF with <strong>🖨️ Save as PDF</strong>.</li>
+    </ol>
+    <button class="btn-primary" onclick="openEditor()">✨ Start</button>
+  </section>
+
+  <!-- The press kit (filled in by app.js) -->
+  <div id="kit"></div>
+
+  <!-- Editor -->
+  <aside class="editor" id="editor" aria-label="Edit press kit">
+    <div class="editor-head">
+      <div>
+        <h2>Edit Press Kit</h2>
+        <span class="save-status" id="saveStatus">All changes saved</span>
+      </div>
+      <button class="btn-small primary" onclick="closeEditor()">✓ Done</button>
+    </div>
+
+    <form id="editorForm" autocomplete="off">
+
+      <fieldset>
+        <legend>1 · The basics</legend>
+        <div class="photo-row">
+          <div class="photo-preview" id="photoPreview">🎧</div>
+          <div>
+            <label class="btn-small" for="photoInput">📷 Add photo</label>
+            <input type="file" id="photoInput" accept="image/*" hidden />
+            <button type="button" class="link-btn" id="removePhotoBtn" onclick="removePhoto()">Remove</button>
+          </div>
+        </div>
+        <label>DJ name <input id="fName" placeholder="e.g. DJ Nova" /></label>
+        <label>Tagline <input id="fTagline" placeholder="e.g. Afrobeats · Amapiano · Hip-Hop — Worldwide" /></label>
+        <label>Based in <input id="fLocation" placeholder="e.g. London, UK" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · About you</legend>
+        <label>Bio <textarea id="fBio" rows="5" placeholder="A few lines about you: your sound, where you play, what makes your sets special."></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Your numbers</legend>
+        <p class="hint">Leave a number empty to hide it.</p>
+        <div id="statFields"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4 · Genres you play</legend>
+        <div class="choices" id="genreChoices"></div>
+        <input id="genreCustom" class="add-input" placeholder="Another genre? Type it and press Enter" />
+      </fieldset>
+
+      <fieldset>
+        <legend>5 · Available for</legend>
+        <div class="choices" id="eventChoices"></div>
+        <input id="eventCustom" class="add-input" placeholder="Something else? Type it and press Enter" />
+      </fieldset>
+
+      <fieldset>
+        <legend>6 · Your mixes</legend>
+        <p class="hint">Paste a Mixcloud, SoundCloud or YouTube link and a player appears on your page.</p>
+        <div id="mixFields"></div>
+        <button type="button" class="add-btn" data-add="mixes">+ Add a mix</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>7 · YouTube</legend>
+        <label>Channel link <input id="fYoutube" placeholder="e.g. youtube.com/@yourname" /></label>
+        <div id="videoFields"></div>
+        <button type="button" class="add-btn" data-add="videos">+ Add a video</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>8 · Past venues &amp; events</legend>
+        <div id="venueFields"></div>
+        <button type="button" class="add-btn" data-add="venues">+ Add a venue</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>9 · What people say</legend>
+        <div id="quoteFields"></div>
+        <button type="button" class="add-btn" data-add="testimonials">+ Add a quote</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>10 · Booking contacts</legend>
+        <p class="hint">Only the ones you fill in are shown.</p>
+        <label>📧 Email <input id="c_email" type="email" placeholder="you@example.com" /></label>
+        <label>📱 Phone <input id="c_phone" type="tel" placeholder="+44 7700 900000" /></label>
+        <label>💬 WhatsApp <input id="c_whatsapp" type="tel" placeholder="With country code, e.g. +44 7700 900000" /></label>
+        <label>📸 Instagram <input id="c_instagram" placeholder="@yourname" /></label>
+        <label>🎵 TikTok <input id="c_tiktok" placeholder="@yourname" /></label>
+        <label>☁️ SoundCloud <input id="c_soundcloud" placeholder="soundcloud.com/yourname" /></label>
+        <label>🎧 Mixcloud <input id="c_mixcloud" placeholder="mixcloud.com/yourname" /></label>
+        <label>🌐 Website <input id="c_website" placeholder="yourname.com" /></label>
+      </fieldset>
+
+      <p class="hint editor-foot">Saved in this browser. Download a backup from <a href="../index.html">DropSet Home</a> to keep it safe.</p>
+    </form>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
