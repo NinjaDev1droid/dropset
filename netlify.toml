@@ -1,0 +1,5 @@
+# Netlify build settings (used when the GitHub repo is linked in Netlify).
+# Publishes the same files as GitHub Pages: the landing page + afroflow/.
+[build]
+  command = "./scripts/build-site.sh"
+  publish = "_site"
