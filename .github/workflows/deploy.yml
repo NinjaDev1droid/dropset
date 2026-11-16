@@ -1,4 +1,4 @@
-# Runs every test, then publishes the website to GitHub Pages.
+# Runs every test, then publishes the website to GitHub Pages and Netlify.
 # If any test fails, the live site is left as it was.
 name: Test and deploy
 
@@ -49,3 +49,24 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Also publishes the same site to Netlify (https://dropset-101.netlify.app).
+  # Needs the NETLIFY_AUTH_TOKEN repo secret; skipped if it isn't set.
+  deploy-netlify:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: d46d1ced-4bf8-40a8-909f-d070edfac319
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        with:
+          node-version: 22
+      - name: Build site
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        run: ./scripts/build-site.sh
+      - name: Deploy to Netlify
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        run: npx -y netlify-cli@26 deploy --dir=_site --prod --no-build --message "${{ github.sha }}"
