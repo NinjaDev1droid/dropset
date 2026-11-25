@@ -34,12 +34,11 @@ jobs:
           CHROME_PATH: /usr/bin/google-chrome
         run: npm test
 
-  deploy:
+  # Build and deploy are separate jobs (as in GitHub's Pages template): if they
+  # share a job, deploy can look for the uploaded files before GitHub lists them.
+  build:
     needs: test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
       - name: Build site
@@ -48,6 +47,14 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5
 
