@@ -22,7 +22,9 @@ const check = (name, ok, info = "") => { results.push({ name, ok, info }); conso
     const errors = [];
     const dialogs = [];
     page.on("pageerror", e => errors.push(e.message));
-    page.on("console", m => { if (m.type() === "error" && !/Failed to load resource|net::ERR/.test(m.text())) errors.push(m.text()); });
+    // Ignore network noise, and Chrome's "unload is not allowed" message, which
+    // the embedded Mixcloud player sometimes triggers (none of our code uses unload).
+    page.on("console", m => { if (m.type() === "error" && !/Failed to load resource|net::ERR|Permissions policy violation: unload is not allowed/.test(m.text())) errors.push(m.text()); });
     page.on("dialog", d => { dialogs.push(d.message()); d.accept(); });
     await page.goto(ROOT + path, { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(300);
