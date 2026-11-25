@@ -16,6 +16,8 @@ const check = (name, ok, info = "") => { results.push({ name, ok, info }); conso
   const browser = await chromium.launch({ executablePath: CHROME, headless: true });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   await ctx.grantPermissions(["clipboard-read", "clipboard-write"]);
+  // Block Google Analytics so test runs never show up as real visits
+  await ctx.route(/googletagmanager\.com|google-analytics\.com|analytics\.google\.com/, r => r.abort());
 
   async function open(path) {
     const page = await ctx.newPage();
